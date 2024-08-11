@@ -5,10 +5,13 @@ class Api::V1::TokensController < ApplicationController
     if @user&.authenticate(user_params[:password])
       render json: {
         token: JsonWebToken.encode(user_id: @user.id),
-        email: @user.email
+        data: @user
       }
     else
-      head :unauthorized
+      render json:{
+        error: "Invalid email or password"
+      },
+      status: :unauthorized
     end
   end
 
