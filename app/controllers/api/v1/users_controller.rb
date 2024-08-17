@@ -1,6 +1,8 @@
 class Api::V1::UsersController < ApplicationController
+  skip_before_action :authenticate_user, only: [:create]
   before_action :set_user, only: %i[show update destroy]
   before_action :check_owner, only: %i[update destroy]
+
 
   # Get /users/1
   def show
@@ -15,8 +17,8 @@ class Api::V1::UsersController < ApplicationController
       render json: {
         token: JsonWebToken.encode(user_id: @user.id),
         data: @user,
-        status: :created
-      }
+      },
+      status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
     end

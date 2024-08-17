@@ -3,9 +3,10 @@ require "test_helper"
 class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
+    @token = JsonWebToken.encode(user_id: @user.id)
   end
   test "should show user" do
-    get api_v1_user_url(@user), as: :json
+    get api_v1_user_url(@user), headers: { 'Authorization': "Bearer #{@token}" }, as: :json
     assert_response :success
 
     json_response = JSON.parse(self.response.body)
@@ -55,9 +56,9 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
         email: "wrong_email",
         password: "password"
       }
-    }, as: :json
+    }, headers: { 'Authorization': "Bearer #{@token}" }, as: :json
 
-    assert_response :forbidden
+    assert_response :unprocessable_entity
   end
 
   test "should not update user when invalid params are present" do
@@ -76,17 +77,17 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   test " should delete/destroy a user" do
     assert_difference('User.count', -1) do
       delete api_v1_user_url(@user),
-      headers: { Authorization: JsonWebToken.encode(user_id: @user.id)},
+      headers: { 'Authorization': "Bearer #{@token}" },
        as: :json
     end
     assert_response :no_content
   end
 
-  test " should forbid delete/destroy a user" do
+  test " should forbid delete/destroy a user if not authorised" do
     assert_no_difference('User.count') do
       delete api_v1_user_url(@user), as: :json
     end
-    assert_response :forbidden
+    assert_response :unauthorized
   end
 
 end
