@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, only: [:show, :create, :update, :destroy]
       post 'login', to: 'tokens#create'
-      resources :products, only: [:index, :show]
+      resources :products, only: [:index, :show, :create, :update, :destroy]
     end
 
   end
