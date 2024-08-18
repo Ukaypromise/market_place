@@ -34,8 +34,11 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def destroy
-    @product.destroy
-    head 204
+    if @product.destroy
+      render json: {message: "Delete was successful"}, status: :ok
+    else
+      render json: {message: "Delete was not successful"}, status: :unprocessable_entity
+    end
   end
 
   private

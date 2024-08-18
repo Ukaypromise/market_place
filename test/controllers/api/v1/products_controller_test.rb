@@ -76,7 +76,7 @@ class Api::V1::ProductsControllerTest < ActionDispatch::IntegrationTest
       delete api_v1_product_url(@product),
         headers: { 'Authorization': "Bearer #{@token}" }, as: :json
     end
-    assert_response :no_content
+    assert_response :success
   end
 
   test "should not delete if user is not authorized" do
