@@ -27,4 +27,23 @@ class ProductTest < ActiveSupport::TestCase
     assert_equal [products(:one),products(:three), products(:four), products(:two)], Product.recent.to_a
   end
 
+  test "search should return empty if title or price is not found" do
+    search_query = {keyword: "table", min_price: 500}
+    assert Product.search(search_query).empty?
+  end
+
+  test"search should find an item if present" do
+    search_query = {keyword: "Samsung", min_price: 1400, max_price: 1600 }
+    assert_equal [products(:three)], Product.search(search_query)
+  end
+
+  test "should return all products when no search query or parameters" do
+    assert_equal Product.all.to_a, Product.search({})
+  end
+
+  test "search should return or filter products by id" do
+    search_query = {product_ids: products(:one).id}
+    assert_equal [products(:one)], Product.search(search_query)
+  end
+
 end
