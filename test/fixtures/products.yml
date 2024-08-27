@@ -1,13 +1,23 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
-  price: 9.99
+  title: Iphone 15 Promax
+  price: 1200.99
   availability: false
   user: one
 
 two:
-  title: MyString
-  price: 9.99
+  title: MacBook Pro
+  price: 2500.99
+  availability: false
+  user: two
+three:
+  title: Samsung Television 
+  price: 1500.99
+  availability: false
+  user: two
+four:
+  title: MacBook Air
+  price: 2000.99
   availability: false
   user: two
