@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root to: proc { [200, {}, ['API is now running']] }
 
   get "up" => "rails/health#show", as: :rails_health_check
 
